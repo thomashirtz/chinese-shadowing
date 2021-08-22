@@ -29,7 +29,13 @@ if __name__ == '__main__':
     meaning_sentence_box.pack()
 
     hsk_option = ['HSK1', 'HSK2', 'HSK3', 'HSK4', 'HSK5', 'HSK6']
+    from_hsk_box = tk.Label(master, text='From')
+    from_hsk_box.config(font=("Segoe UI", 15))
+    from_hsk_box.pack()
     from_hsk_menu, from_hsk_variable = define_option_menu(master=master, option_list=hsk_option, default_index=0)
+    to_hsk_box = tk.Label(master, text='From')
+    to_hsk_box.config(font=("Segoe UI", 15))
+    to_hsk_box.pack()
     to_hsk_menu, to_hsk_variable = define_option_menu(master=master, option_list=hsk_option, default_index=5)  # futur constraint the options
 
     sentence_index = tk.IntVar(master)
