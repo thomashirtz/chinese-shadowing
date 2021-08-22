@@ -1,15 +1,31 @@
 # chinese-shadowing
-
+<img align="right" width="400"  src="gui.png"> 
 Simple APP for shadowing chinese. With this application, it is very easy to record
 yourself, play the sound recorded and listen to some chinese sentences.
 
-![](gui.png)
+## How to use
+
+After the installation, execute in the console:
+```bash
+chinese-shadowing
+```
+
+This application works with keybord hotkeys:  
+`H` => Change sentence   
+`J` => Listen file  
+`K` => Record   
+`L` => Listen recording  
+
+## Installation
+```python
+pip install git+https://github.com/thomashirtz/chinese-shadowing#egg=chinese-shadowing
+```
+
 
 ## Requirements
 
-numpy
-matplotlib
-pandas
-future
-pydub
-pyaudio
+numpy  
+pandas   
+matplotlib  
+pydub  
+pyaudio  
