@@ -29,11 +29,11 @@ def main():
     meaning_sentence_box.pack()
 
     hsk_option = ['HSK1', 'HSK2', 'HSK3', 'HSK4', 'HSK5', 'HSK6']
-    from_hsk_box = tk.Label(master, text='From')
+    from_hsk_box = tk.Label(master, text='\nFrom')
     from_hsk_box.config(font=("Segoe UI", 15))
     from_hsk_box.pack()
     from_hsk_menu, from_hsk_variable = define_option_menu(master=master, option_list=hsk_option, default_index=0)
-    to_hsk_box = tk.Label(master, text='From')
+    to_hsk_box = tk.Label(master, text='To')
     to_hsk_box.config(font=("Segoe UI", 15))
     to_hsk_box.pack()
     to_hsk_menu, to_hsk_variable = define_option_menu(master=master, option_list=hsk_option, default_index=5)  # futur constraint the options
@@ -77,7 +77,7 @@ def main():
         thread.start()
     master.bind("<KeyPress-j>", play_file)
 
-    keyboard_shortcuts_box = tk.Label(master, text="H => Change sentence \n J => Listen file \n K => Record \n L => Listen recording")
+    keyboard_shortcuts_box = tk.Label(master, text="\nH => Change sentence \n J => Listen file \n K => Record \n L => Listen recording")
     keyboard_shortcuts_box.config(font=("Segoe UI", 15))
     keyboard_shortcuts_box.pack()
 
