@@ -4,13 +4,13 @@ import pandas as pd
 import tkinter as tk
 from chinese_shadowing.config import path_csv
 from chinese_shadowing.config import path_data
-from chinese_shadowing.play_audio import get_mp3_audio
 from chinese_shadowing.record_audio import Recorder
-from chinese_shadowing.utilities import define_option_menu
+from chinese_shadowing.play_audio import get_mp3_audio
 from chinese_shadowing.play_audio import PlayAudioThread
+from chinese_shadowing.utilities import define_option_menu
 
 
-if __name__ == '__main__':
+def main():
     master = tk.Tk()
 
     df = pd.read_csv(path_csv, index_col=0)
@@ -83,3 +83,6 @@ if __name__ == '__main__':
 
     master.mainloop()  # todo add buttons
 
+
+if __name__ == '__main__':
+    main()
