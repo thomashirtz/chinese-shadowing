@@ -41,7 +41,6 @@ class PlayAudioThread(threading.Thread):
         self.channels = channels
 
     def run(self):
-        print('start playing')
         play_audio(self.audio, self.frame_rate, self.channels)
 
     def join(self, timeout=None):
