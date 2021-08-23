@@ -3,6 +3,7 @@ import pyaudio
 import numpy as np
 import tkinter as tk
 from chinese_shadowing.plot import plot_amplitude
+from chinese_shadowing.utilities import get_time
 import threading
 
 CHUNK = 8192
@@ -10,7 +11,7 @@ FORMAT = pyaudio.paInt16
 CHANNELS = 2
 RATE = 44100
 TIMEOUT = 10
-PLOT = True
+PLOT = False
 
 
 class RecordAudioThread(threading.Thread):
@@ -30,18 +31,20 @@ class RecordAudioThread(threading.Thread):
         )
 
     def run(self):
-        print('start recording')
+        print(f'{get_time()} Start recording')  # todo need to put it outside + indicator
         frames = []
         start_time = time.time()
         current_time = time.time()
 
-        while (current_time - start_time) < TIMEOUT and not self._stop_event.isSet():
+        while ((current_time - start_time) < TIMEOUT and not self._stop_event.isSet()) or not frames:
             data = self.stream.read(CHUNK)
             frames.append(np.frombuffer(data, dtype=np.int16))
             current_time = time.time()
+
         self._recording = np.hstack(frames)
         self.stream.close()
         self.p.terminate()
+        print(f'{get_time()} Stop recording')  # todo need to put it outside
 
     def join(self, timeout=None):
         """set stop event and join within a given time period"""
@@ -65,7 +68,7 @@ class Recorder:
     def stop(self, event):
         if self._key_pressed:
             self.result = self.thread.join()
-            if PLOT:
+            if PLOT and self.result[0] is not None:
                 plot_amplitude(self.result[0], rate=RATE * 2, title='test recording')
         self._key_pressed = False
 
