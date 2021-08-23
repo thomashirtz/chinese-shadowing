@@ -13,7 +13,7 @@ chinese-shadowing
 This application works with keybord hotkeys:  
 `H` => Change sentence   
 `J` => Listen file  
-`K` => Record   
+`K` => Record (start when key is pressed, stop when key is released)   
 `L` => Listen recording  
 
 ## Installation
