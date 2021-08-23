@@ -2,12 +2,14 @@ import time
 import numpy as np
 import pandas as pd
 import tkinter as tk
+from typing import Optional
 from chinese_shadowing.config import path_csv
 from chinese_shadowing.config import path_data
 from chinese_shadowing.record_audio import Recorder
 from chinese_shadowing.play_audio import get_mp3_audio
 from chinese_shadowing.play_audio import PlayAudioThread
 from chinese_shadowing.utilities import define_option_menu
+from chinese_shadowing.utilities import get_time
 
 
 def main():
@@ -42,7 +44,7 @@ def main():
     sentence_index.set(0)
 
     # New sentence
-    def change_sentence(event=None):
+    def change_sentence(event: Optional[tk.Event] = None):
         low = int(from_hsk_variable.get()[-1])
         high = int(to_hsk_variable.get()[-1])
 
@@ -60,24 +62,24 @@ def main():
     master.bind("<KeyRelease-k>", recorder.stop)
 
     # Play recording
-    def play_recording(event=None):
-        print(f'{time.time()} play recording')
+    def press_play_recording(event: Optional[tk.Event] = None):  # todo maybe change to class
+        print(f'{get_time()} Play recording')
         if recorder.result is not None:
             audio, frame_rate, channels = recorder.result
             thread = PlayAudioThread(audio, frame_rate, channels)
             thread.start()
-    master.bind("<KeyPress-l>", play_recording)
+    master.bind("<KeyPress-l>", press_play_recording)
 
     # Play file
-    def play_file(event=None):
-        print(f'{time.time()} play file')
+    def press_play_file(event: Optional[tk.Event] = None):  # todo maybe change to class
+        print(f'{get_time()} Play sentence')
         path_mp3 = (path_data / str(sentence_index.get())).with_suffix('.mp3')
         audio, frame_rate, channels = get_mp3_audio(path_mp3)
         thread = PlayAudioThread(audio, frame_rate, channels)
         thread.start()
-    master.bind("<KeyPress-j>", play_file)
+    master.bind("<KeyPress-j>", press_play_file)
 
-    keyboard_shortcuts_box = tk.Label(master, text="\nH => Change sentence \n J => Listen file \n K => Record \n L => Listen recording")
+    keyboard_shortcuts_box = tk.Label(master, text="\nH => Change sentence \n J => Play sentence \n K => Record (Hold key) \n L => Play recording")
     keyboard_shortcuts_box.config(font=("Segoe UI", 15))
     keyboard_shortcuts_box.pack()
 
