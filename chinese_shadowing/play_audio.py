@@ -1,11 +1,21 @@
-import numpy as np
+from typing import Union
+from pathlib import Path
+
 import threading
-from pydub import AudioSegment
+import numpy as np
+
 from pydub import effects
+from pydub import AudioSegment
 from pydub.playback import play
 
 
-def play_audio(raw_audio, frame_rate, channels, normalize: bool = True):
+def play_audio(
+        raw_audio: np.array,
+        frame_rate: int,
+        channels: int,
+        normalize: bool = True
+):
+    """Play audio that is in numpy array form"""
     audio = AudioSegment(
         raw_audio.tobytes(),
         frame_rate=frame_rate,
@@ -19,7 +29,7 @@ def play_audio(raw_audio, frame_rate, channels, normalize: bool = True):
         play(audio)
 
 
-def get_mp3_audio(file_path):
+def get_mp3_audio(file_path: Union[Path, str]):
     """MP3 to numpy array"""
     audio_segment = AudioSegment.from_mp3(file_path)
     raw_audio = np.array(audio_segment.get_array_of_samples())
@@ -27,14 +37,16 @@ def get_mp3_audio(file_path):
     return raw_audio, audio_segment.frame_rate, audio_segment.channels
 
 
-def play_mp3_file(file_path):
+def play_mp3_file(file_path: Union[Path, str]):
+    """Play MP3 file"""
     audio, frame_rate, channels = get_mp3_audio(file_path)
     play_audio(audio, frame_rate, channels)
 
 
 class PlayAudioThread(threading.Thread):
+    """Thread that plays raw audio that is in numpy array form"""
     # https://stackoverflow.com/questions/18018033/how-to-stop-a-looping-thread-in-python
-    def __init__(self, audio, frame_rate, channels):
+    def __init__(self, audio: np.array, frame_rate: int, channels: int):
         threading.Thread.__init__(self)
         self.audio = audio
         self.frame_rate = frame_rate
