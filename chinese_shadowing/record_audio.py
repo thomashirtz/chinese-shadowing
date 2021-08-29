@@ -1,10 +1,14 @@
+from typing import Tuple
+from typing import Optional
 import time
 import pyaudio
+import threading
 import numpy as np
 import tkinter as tk
+
 from chinese_shadowing.plot import plot_amplitude
 from chinese_shadowing.utilities import get_time
-import threading
+
 
 CHUNK = 8192
 FORMAT = pyaudio.paInt16
@@ -15,6 +19,7 @@ PLOT = False
 
 
 class RecordAudioThread(threading.Thread):
+    """Thread that record raw audio in numpy array form"""
     # https://stackoverflow.com/questions/18018033/how-to-stop-a-looping-thread-in-python
     def __init__(self):
         threading.Thread.__init__(self)
@@ -46,7 +51,10 @@ class RecordAudioThread(threading.Thread):
         self.p.terminate()
         print(f'{get_time()} Stop recording')  # todo need to put it outside
 
-    def join(self, timeout=None):
+    def join(
+            self,
+            timeout: Optional[int] = None
+    ) -> Tuple[np.array, int, int]:
         """set stop event and join within a given time period"""
         self._stop_event.set()
         super().join(timeout)
@@ -54,18 +62,19 @@ class RecordAudioThread(threading.Thread):
 
 
 class Recorder:
+    """Class that made the creation of recording threads easy for tkinter"""
     def __init__(self):
-        self._key_pressed = False
         self.thread = None
         self.result = None
+        self._key_pressed = False
 
-    def start(self, event):
+    def start(self, event : Optional[tk.Event] = None):
         if not self._key_pressed:
             self.thread = RecordAudioThread()
             self.thread.start()
         self._key_pressed = True
 
-    def stop(self, event):
+    def stop(self, event : Optional[tk.Event] = None):
         if self._key_pressed:
             self.result = self.thread.join()
             if PLOT and self.result[0] is not None:
@@ -75,7 +84,7 @@ class Recorder:
 
 if __name__ == '__main__':
     master = tk.Tk()
-    listener = Recorder()
-    master.bind("<KeyPress-k>", listener.start)
-    master.bind("<KeyRelease-k>", listener.stop)
+    recorder = Recorder()
+    master.bind("<KeyPress-k>", recorder.start)
+    master.bind("<KeyRelease-k>", recorder.stop)
     master.mainloop()
