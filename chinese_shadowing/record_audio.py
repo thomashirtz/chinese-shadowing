@@ -68,13 +68,13 @@ class Recorder:
         self.result = None
         self._key_pressed = False
 
-    def start(self, event : Optional[tk.Event] = None):
+    def start(self, event: Optional[tk.Event] = None):
         if not self._key_pressed:
             self.thread = RecordAudioThread()
             self.thread.start()
         self._key_pressed = True
 
-    def stop(self, event : Optional[tk.Event] = None):
+    def stop(self, event: Optional[tk.Event] = None):
         if self._key_pressed:
             self.result = self.thread.join()
             if PLOT and self.result[0] is not None:
