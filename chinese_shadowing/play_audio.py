@@ -1,4 +1,5 @@
 from typing import Union
+from typing import Tuple
 from pathlib import Path
 
 import threading
@@ -14,7 +15,7 @@ def play_audio(
         frame_rate: int,
         channels: int,
         normalize: bool = True
-):
+) -> None:
     """Play audio that is in numpy array form"""
     audio = AudioSegment(
         raw_audio.tobytes(),
@@ -29,7 +30,9 @@ def play_audio(
         play(audio)
 
 
-def get_mp3_audio(file_path: Union[Path, str]):
+def get_mp3_audio(
+        file_path: Union[Path, str]
+) -> Tuple[np.array, int, int]:
     """MP3 to numpy array"""
     audio_segment = AudioSegment.from_mp3(file_path)
     raw_audio = np.array(audio_segment.get_array_of_samples())
@@ -37,7 +40,7 @@ def get_mp3_audio(file_path: Union[Path, str]):
     return raw_audio, audio_segment.frame_rate, audio_segment.channels
 
 
-def play_mp3_file(file_path: Union[Path, str]):
+def play_mp3_file(file_path: Union[Path, str]) -> None:
     """Play MP3 file"""
     audio, frame_rate, channels = get_mp3_audio(file_path)
     play_audio(audio, frame_rate, channels)
@@ -52,7 +55,7 @@ class PlayAudioThread(threading.Thread):
         self.frame_rate = frame_rate
         self.channels = channels
 
-    def run(self):
+    def run(self) -> None:
         play_audio(self.audio, self.frame_rate, self.channels)
 
     def join(self, timeout=None):
