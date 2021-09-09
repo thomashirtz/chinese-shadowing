@@ -44,7 +44,7 @@ def main():
     sentence_index.set(0)
 
     # New sentence
-    def change_sentence(event: Optional[tk.Event] = None):
+    def change_sentence(event: Optional[tk.Event] = None) -> None:
         low = int(from_hsk_variable.get()[-1])
         high = int(to_hsk_variable.get()[-1])
 
@@ -62,7 +62,7 @@ def main():
     master.bind("<KeyRelease-k>", recorder.stop)
 
     # Play recording
-    def press_play_recording(event: Optional[tk.Event] = None):  # todo maybe change to class
+    def press_play_recording(event: Optional[tk.Event] = None) -> None:  # todo maybe change to class
         print(f'{get_time()} Play recording')
         if recorder.result is not None:
             audio, frame_rate, channels = recorder.result
@@ -71,7 +71,7 @@ def main():
     master.bind("<KeyPress-l>", press_play_recording)
 
     # Play file
-    def press_play_file(event: Optional[tk.Event] = None):  # todo maybe change to class
+    def press_play_file(event: Optional[tk.Event] = None) -> None:  # todo maybe change to class
         print(f'{get_time()} Play sentence')
         path_mp3 = (path_data / str(sentence_index.get())).with_suffix('.mp3')
         audio, frame_rate, channels = get_mp3_audio(path_mp3)
